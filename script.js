@@ -1,45 +1,41 @@
-const btnManzana = document.getElementById("manzana");
-const btnBanana = document.getElementById("banana");
-const btnNaranja = document.getElementById("naranja");
-
-const respuesta = document.getElementById("respuesta");
-
-class fruta {
-	constructor(nombre, color, forma){
+class Frutas {
+	constructor(nombre, color, forma, texto){
 		this.nombre = nombre;
 		this.color = color;
 		this.forma = forma;
+		this.texto = texto;
 		this.info = `Ésta fruta es una ${nombre}, es de color ${color} y tiene forma ${forma}.`;
 	}
 	verInfo(){
-		//alert(this.info);
 		respuesta.innerHTML = this.info ;
+		respuesta.style.textShadow = this.texto;
 	}
 }
 
-let manzana = new fruta("manzana","rojo", "cuadrada");
+const respuesta = document.getElementById("respuesta");
 
-let naranja = new fruta("naranja","naranja", "redonda");
+const frutas = [
+	["manzana", "rojo", "cuadrada", "0 0 .5rem #d5003d"],
+	["naranja","naranja", "redonda", "0 0 .5rem #FCa53C"],
+	["banana","amarillo", "curva", "0 0 .5rem #b5d600"]
+]
 
-let banana = new fruta("banana","amarillo", "curva");
+let fruta = [];
 
-function $frutas(reference){
-	if(reference == "manzana"){
-		manzana.verInfo();
-		respuesta.style.textShadow = "0 0 .5rem #d5003d";
-	}
-	else if(reference == "banana"){
-		banana.verInfo();
-		respuesta.style.textShadow = "0 0 .5rem #b5d600";
-	}
-	else if(reference == "naranja"){
-		naranja.verInfo();
-		respuesta.style.textShadow = "0 0 .5rem #FCa53C";
-	}
+for (let i in frutas){
+	fruta[i] = new Frutas(frutas[i][0], frutas[i][1], frutas[i][2], frutas[i][3]);
 }
 
-btnManzana.addEventListener("click", function(){$frutas("manzana")}, true);
-
-btnBanana.addEventListener("click", function(){$frutas("banana")}, true);
-
-btnNaranja.addEventListener("click", function(){$frutas("naranja")}, true);
+window.addEventListener("click", (e)=> {
+	let boton = e.target;
+	let referencia = "";
+	if (boton.classList.contains("fruta")){
+		for (let i in frutas){
+			if (fruta[i].nombre === boton.id){
+				referencia = fruta[i];
+				break;
+			}
+		}
+		referencia.verInfo();
+	}
+});
